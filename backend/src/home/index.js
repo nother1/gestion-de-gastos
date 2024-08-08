@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import mainRoutes from '../routes/main.routes.js';
 import loginRoutes from '../routes/login.routes.js';
+import categoriesRoutes from '../routes/categories.routes.js';
 import dbConeccion from '../class/dbConnetion.js';
 import {fileURLToPath} from 'node:url';
 import fs  from 'node:fs';
@@ -27,6 +28,7 @@ app.use(morgan("dev",{stream:logStream}));
 
 app.use(mainRoutes);
 app.use(loginRoutes);
+app.use(categoriesRoutes);
 
 app.listen(PORT,  () => {
     console.log("Hola Mundo");

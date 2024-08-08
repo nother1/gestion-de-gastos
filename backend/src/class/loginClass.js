@@ -1,8 +1,9 @@
+/*
+    Documentacion completa ubicada en ../docs/login.md
+*/
 import { conn } from "../home/index.js";
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from 'uuid';
 class loginClass{
     async loginUser(values){
         try {

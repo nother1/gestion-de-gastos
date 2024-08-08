@@ -1,5 +1,5 @@
 import mysql from 'mysql2/promise';
-import { v4 as uuidv4 } from 'uuid';
+import {createUuid} from '../helpers/createUuid.js'
 import bcrypt from "bcrypt";
 import {conn} from '../home/index.js'
 
@@ -20,7 +20,50 @@ class QueryDatabase{
                   password VARCHAR(255) NOT NULL
                 );
             `);
-            const userUuid = uuidv4();
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS categories (
+                    uuid VARCHAR(36) PRIMARY KEY,
+                    tipo_categoria VARCHAR(255),
+                    porcentaje DOUBLE(5,2) NOT NULL,
+                    descripcion LONGTEXT
+                );
+            `);
+            
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS movimientos (
+                    uuid VARCHAR(36) PRIMARY KEY,
+                    tipo_movimiento VARCHAR(255),
+                    monto INT NOT NULL,
+                    fecha DATETIME NOT NULL,
+                    descripcion LONGTEXT,
+                    categoria_id VARCHAR(36),
+                    FOREIGN KEY (categoria_id) REFERENCES categories(uuid)
+                );
+            `);
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS deudas (
+                    uuid VARCHAR(36) PRIMARY KEY,
+                    valor_actual int NOT NULL,
+                    valor_con_intereses int ,
+                    fecha_inicio Datetime NOT NULL,
+                    fecha_fin datetime,
+                    descripcion longtext
+                );
+            `);
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS ingresos (
+                    uuid VARCHAR(36) PRIMARY KEY,
+                    monto int NOT NULL,
+                    fecha datetime,
+                    descripcion longtext,
+                    fuente varchar(50)
+                );
+            `);
+
+            const userUuid = await createUuid();
             const myPlaintextPassword = '1508';
             const saltRounds = 10
             const passwordHash = bcrypt.hashSync(myPlaintextPassword, saltRounds);

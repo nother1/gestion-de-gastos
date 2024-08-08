@@ -1,3 +1,6 @@
+/*
+    Documentacion completa ubicada en ../docs/login.md
+*/
 import loginClass from '../class/loginClass.js'
 
 export const login = async(req,res) =>{
